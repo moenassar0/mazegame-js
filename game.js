@@ -39,9 +39,6 @@ function WindowLoaded(){
         }
     }
 
-
-
-
     startDiv.addEventListener("mouseenter", function() { StartGame(boundaryDivs); });
     endElement.addEventListener("mouseenter", WonGame);
 
@@ -52,6 +49,7 @@ function WindowLoaded(){
 
     //Game started function that is called when the player moves the mouse into the S box
     function StartGame(_boundaryDivs){
+        CheckPosition();
         gameStarted = true;
         for(var i = 0; i < _boundaryDivs.length - 1; i++){
             _boundaryDivs[i].style.backgroundColor = "#eeeeee";
@@ -61,15 +59,15 @@ function WindowLoaded(){
     }
 
     function LoseGame(_gameStarted, _boundaryDivs){
-        console.log(_gameStarted);
-        if(_gameStarted){
-            for(var i = 0; i < _boundaryDivs.length - 1; i++){
-                _boundaryDivs[i].style.backgroundColor = "red";
+        console.log(gameStarted);
+        if(gameStarted){
+            for(var i = 0; i < boundaryDivs.length - 1; i++){
+                boundaryDivs[i].style.backgroundColor = "red";
             }
             lost = true;
             UpdateScore();
             statusElement.innerHTML = "You Lost! Score: " + score;
-            _gameStarted = false;
+            gameStarted = false;
         }
     }
 
@@ -78,6 +76,26 @@ function WindowLoaded(){
         UpdateScore();
         statusElement.innerHTML = "You Won! Begin again by moving your mouse over the 'S'  Score: " + score;
         gameStarted = false;
+    }
+
+    function CheckForCheating(){
+
+    }
+
+    function CheckPosition(){
+        onmousemove = function(e){
+            xPos = e.clientX;
+            yPos = e.clientY;
+            var offsets = startDiv.getBoundingClientRect();
+            var top = offsets.top;
+            var left = offsets.left;
+            console.log("Mouse Pos: " + xPos + " " + yPos + "DIV POS:" + left);
+
+            if(left > xPos){
+                LoseGame();
+            }
+        }
+
     }
 }
 
