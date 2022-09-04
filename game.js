@@ -1,17 +1,4 @@
-/*function StartGame(){
-    console.log("worked");
-    var mouseDown = 0;
-    document.body.onmousedown = function() { 
-        mouseDown = 1;
-    }
-    document.body.onmouseup = function() {
-        mouseDown = 0;
-    }
-}
-*/
-
 window.addEventListener('load', WindowLoaded);
-
 
 function WindowLoaded(){
     var startDiv = document.getElementById("start");
@@ -24,7 +11,6 @@ function WindowLoaded(){
     var won = false;
 
     var score = 0;
-
 
     function UpdateScore(){
         if(lost){
@@ -81,10 +67,6 @@ function WindowLoaded(){
 
     }
 
-    function CheckForCheating(){
-
-    }
-
     function CheckPosition(){
         onmousemove = function(e){
             xPos = e.clientX;
@@ -100,10 +82,4 @@ function WindowLoaded(){
         }
 
     }
-}
-
-
-
-function ConsoleLog(){
-    console.log("entered");
 }
