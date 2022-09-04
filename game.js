@@ -11,40 +11,29 @@ function WindowLoaded(){
     var won = false;
 
     var score = 0;
-
-    function UpdateScore(){
-        if(lost){
-            score -= 10;
-            console.log("gg");
-        }
-    
-        if(won){
-            score += 5;
-            won = false;
-        }
-    }
+    let seconds = 10;
 
     startDiv.addEventListener("mouseenter", function() { StartGame(boundaryDivs); });
     endElement.addEventListener("mouseenter", WonGame);
 
     for(var i = 0; i < boundaryDivs.length - 1; i++){
         boundaryDivs[i].addEventListener("mouseenter", function() { LoseGame(gameStarted, boundaryDivs); } );
-        boundaryDivs[i].addEventListener("mouseenter", ConsoleLog);
     }
 
     //Game started function that is called when the player moves the mouse into the S box
     function StartGame(_boundaryDivs){
+        if(!gameStarted){
+            seconds = 10;
+        }
         CheckPosition();
         gameStarted = true;
         for(var i = 0; i < _boundaryDivs.length - 1; i++){
             _boundaryDivs[i].style.backgroundColor = "#eeeeee";
         }
-        statusElement.innerHTML = "Game Started! Dont Hit The Walls!  Score: " + score;
-        console.log(score);
     }
 
+    //Game lost function called when the player touches the walls or tries to exit the starting position
     function LoseGame(_gameStarted, _boundaryDivs){
-        console.log(gameStarted);
         if(gameStarted){
             for(var i = 0; i < boundaryDivs.length - 1; i++){
                 boundaryDivs[i].style.backgroundColor = "red";
@@ -64,22 +53,44 @@ function WindowLoaded(){
             statusElement.innerHTML = "You Won! Begin again by moving your mouse over the 'S'  Score: " + score;
             gameStarted = false;
         }
-
     }
 
+    //Check position function that gets the X axis of the mouse and the starting position and if the mouse is outside the div the
+    //LoseGame function is called
     function CheckPosition(){
         onmousemove = function(e){
             xPos = e.clientX;
             yPos = e.clientY;
             var offsets = startDiv.getBoundingClientRect();
-            var top = offsets.top;
             var left = offsets.left;
-            //console.log("Mouse Pos: " + xPos + " " + yPos + "DIV POS:" + left);
-
             if(left > xPos){
                 LoseGame();
             }
         }
 
+    }
+
+    function UpdateScore(){
+        if(lost){
+            score -= 10;
+        }
+    
+        if(won){
+            score += 5;
+            won = false;
+        }
+    }
+
+    //Simple countdown implementation
+    setInterval(updateCountDown, 1000);
+    function updateCountDown(){
+        if(gameStarted){
+            statusElement.innerHTML = "Game Started! Score: " + score + " TIME LEFT: " + seconds;
+            seconds--;
+            console.log(seconds);
+        }
+        if(seconds <= -1){
+            LoseGame();
+        }
     }
 }
