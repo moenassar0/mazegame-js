@@ -30,7 +30,6 @@ function WindowLoaded(){
         if(lost){
             score -= 10;
             console.log("gg");
-            lost = false;
         }
     
         if(won){
@@ -72,10 +71,14 @@ function WindowLoaded(){
     }
 
     function WonGame(){
-        won = true;
-        UpdateScore();
-        statusElement.innerHTML = "You Won! Begin again by moving your mouse over the 'S'  Score: " + score;
-        gameStarted = false;
+        if(gameStarted){
+            won = true;
+            lost = false;
+            UpdateScore();
+            statusElement.innerHTML = "You Won! Begin again by moving your mouse over the 'S'  Score: " + score;
+            gameStarted = false;
+        }
+
     }
 
     function CheckForCheating(){
@@ -89,7 +92,7 @@ function WindowLoaded(){
             var offsets = startDiv.getBoundingClientRect();
             var top = offsets.top;
             var left = offsets.left;
-            console.log("Mouse Pos: " + xPos + " " + yPos + "DIV POS:" + left);
+            //console.log("Mouse Pos: " + xPos + " " + yPos + "DIV POS:" + left);
 
             if(left > xPos){
                 LoseGame();
